@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import './App.scss';
 
 function App() {
+  const [activity, setActivity] = React.useState('');
+  const [todos, setTodos] = React.useState([]);
+
+  function generateId() {
+    return Date.now();
+  }
+
+  function addTodoHandler(e) {
+    e.preventDefault();
+
+    setTodos([...todos, {
+      id: generateId(),
+      activity: activity,
+    }]);
+    setActivity('');
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='bg'>
+      <div className='container'>
+        <h1>Simple todolist</h1>
+        <form onSubmit={addTodoHandler}>
+          <input
+            type='text'
+            placeholder='Nama aktifitas'
+            value={activity}
+            onChange={function (e) {
+              setActivity(e.target.value);
+            }} />
+          <button type='submit'>Tambah</button>
+        </form>
+        <ul>
+          {todos.map(function (todo) {
+            return <li key={todo.id}>{todo.activity}</li>
+          })}
+        </ul>
+      </div>
     </div>
   );
 }
